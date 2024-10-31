@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  anaconda:
+    build: .
+    ports:
+      - "8888"  # Expose JupyterLab port to be handled by Traefik
+    volumes:
+      - ./notebooks:/opt/notebooks  # Mount the notebooks directory for data persistence
+    environment:
+      - JUPYTER_TOKEN=${JUPYTER_TOKEN}  # Token for login authentication, stored in .env
+    working_dir: /opt/notebooks
+    command: jupyter lab --ip=0.0.0.0 --port=8888 --no-browser --allow-root --NotebookApp.token=${JUPYTER_TOKEN}
